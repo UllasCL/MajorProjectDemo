@@ -19,23 +19,19 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.Locale;
 
-public class SelectActivity extends AppCompatActivity
-{
+public class SelectActivity extends AppCompatActivity {
     Button complaint;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
-        complaint=(Button)findViewById(R.id.btncmp);
+        complaint = (Button) findViewById(R.id.btncmp);
 
-        complaint.setOnClickListener(new View.OnClickListener()
-        {
+        complaint.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(SelectActivity.this,ComplaintActivity.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(SelectActivity.this, ComplaintActivity.class);
                 startActivity(intent);
             }
         });

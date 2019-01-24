@@ -9,37 +9,33 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class CameraActivity extends AppCompatActivity
-{
+public class CameraActivity extends AppCompatActivity {
     ImageView img;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);git  add
+        setContentView(R.layout.activity_camera);
 
-        Button captue=(Button)findViewById(R.id.btncpt);
+        Button captue = (Button) findViewById(R.id.btncpt);
 
-         img=(ImageView)findViewById(R.id.imgcpt);
+        img = (ImageView) findViewById(R.id.imgcpt);
 
-        captue.setOnClickListener(new View.OnClickListener()
-        {
+        captue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,0);
+            public void onClick(View view) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 0);
 
             }
         });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Bitmap bitmap=(Bitmap)data.getExtras().get("data");
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         img.setImageBitmap(bitmap);
     }
 }

@@ -22,49 +22,46 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity
-{
+public class LoginActivity extends AppCompatActivity {
 
     private EditText Name;
     private EditText Password;
     private TextView Info;
-    private Button Login,admin;
-    private int counter=5;
+    private Button Login, admin;
+    private int counter = 5;
     public static String email;
 
     private ProgressDialog progressdailog;
     private FirebaseAuth firebaseAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
 
-
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.animation);
-        AlphaAnimation animation = new AlphaAnimation(0.0f , 1.0f ) ;
+        AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
         animation.setFillAfter(true);
         animation.setDuration(1200);
         layout.startAnimation(animation);
 
 
-        Name=(EditText)findViewById(R.id.etName);
-        Password=(EditText)findViewById(R.id.etPassword);
-        Info=(TextView)findViewById(R.id.tvInfo);
-        Login=(Button)findViewById(R.id.btnLogin);
+        Name = (EditText) findViewById(R.id.etName);
+        Password = (EditText) findViewById(R.id.etPassword);
+        Info = (TextView) findViewById(R.id.tvInfo);
+        Login = (Button) findViewById(R.id.btnLogin);
         TextView userRegistraion = (TextView) findViewById(R.id.tvRegister);
 
-        firebaseAuth= FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        progressdailog=new ProgressDialog(this);
+        progressdailog = new ProgressDialog(this);
 
-        FirebaseUser user= firebaseAuth.getCurrentUser();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
 
@@ -76,30 +73,26 @@ public class LoginActivity extends AppCompatActivity
         }*/
 
 
-
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                String UserName=( (EditText)findViewById(R.id.etName)).getText().toString();
-                String password= ((EditText)findViewById(R.id.etPassword)).getText().toString();
+            public void onClick(View view) {
+                String UserName = ((EditText) findViewById(R.id.etName)).getText().toString();
+                String password = ((EditText) findViewById(R.id.etPassword)).getText().toString();
                 //Toast.makeText(Login.this,UserName,Toast.LENGTH_LONG).show();
                 // Toast.makeText(Login.this,password,Toast.LENGTH_LONG).show();
                 //viewAll();
-                email=UserName;
-                UserName=UserName+"@gmail.com";
-                if(Validatenull(UserName,password))
-                    validate(UserName,password);
-                else
-                {
+                email = UserName;
+                UserName = UserName + "@gmail.com";
+                if (Validatenull(UserName, password))
+                    validate(UserName, password);
+                else {
                     counter--;
-                    Info.setText("Attempts remaining :"+ String.valueOf(counter));
+                    Info.setText("Attempts remaining :" + String.valueOf(counter));
                     Snackbar.make(Login, "Please enter all the details", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     Name.setText(null);
                     Password.setText(null);
-                    if(counter==0)
-                    {
+                    if (counter == 0) {
                         Login.setVisibility(View.INVISIBLE);
                         Login.setEnabled(false);
                     }
@@ -114,35 +107,27 @@ public class LoginActivity extends AppCompatActivity
 
         userRegistraion.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(LoginActivity.this,RegistrationActivity.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
                 startActivity(intent);
             }
         });
     }
 
 
-
-    private void validate(String username,String password)
-    {
+    private void validate(String username, String password) {
         progressdailog.setMessage("Wait a minute until you are verified");
         progressdailog.show();
-        firebaseAuth.signInWithEmailAndPassword(username,password).addOnCompleteListener(new OnCompleteListener<AuthResult>()
-        {
+        firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task)
-            {
-                if(task.isSuccessful())
-                {
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
                     progressdailog.dismiss();
                     Toast.makeText((LoginActivity.this), "Login successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginActivity.this,SelectActivity.class));
+                    startActivity(new Intent(LoginActivity.this, SelectActivity.class));
                     Name.setText(null);
                     Password.setText(null);
-                }
-                else
-                {
+                } else {
                     Toast.makeText((LoginActivity.this), "Login failed", Toast.LENGTH_SHORT).show();
                     Name.setText(null);
                     Password.setText(null);
@@ -157,8 +142,7 @@ public class LoginActivity extends AppCompatActivity
 
     }
 
-    public void showMessage(String title,String Message)
-    {
+    public void showMessage(String title, String Message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle(title);
@@ -166,17 +150,15 @@ public class LoginActivity extends AppCompatActivity
         builder.show();
     }
 
-    public boolean Validatenull(String u,String p)
-    {
-        if(u.isEmpty()|| p.isEmpty())
+    public boolean Validatenull(String u, String p) {
+        if (u.isEmpty() || p.isEmpty())
             return false;
         else
             return true;
     }
 
 
-    public static String num()
-    {
+    public static String num() {
         return email;
     }
 
