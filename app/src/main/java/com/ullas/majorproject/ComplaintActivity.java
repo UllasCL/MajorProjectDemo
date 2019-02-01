@@ -1,5 +1,6 @@
 package com.ullas.majorproject;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -25,6 +27,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -40,11 +44,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
-public class ComplaintActivity extends AppCompatActivity implements LocationListener
-{
-    Button gallery,camera,address,upload;
+public class ComplaintActivity extends AppCompatActivity {
+    Button gallery, camera, address, upload;
     TextView textAddress;
     ImageView img;
 
@@ -54,7 +60,7 @@ public class ComplaintActivity extends AppCompatActivity implements LocationList
     LocationManager locationManager;
 
     private Uri filePath;
-   // public static final int CAMERA_REQUEST = 10;
+    // public static final int CAMERA_REQUEST = 10;
 
     private final int PICK_IMAGE_REQUEST = 71;
 
@@ -62,54 +68,84 @@ public class ComplaintActivity extends AppCompatActivity implements LocationList
 
     public String ComplaintID;
 
+
+    public double latitude, longitude;
+    public String Address, setAddress;
+
+    Geocoder geocoder;
+    List<Address> addresses;
+
+    private ProgressDialog progressdailog;
+
+
+    private FusedLocationProviderClient mFusedLocationClient;
+
+    @SuppressLint("MissingPermission")
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint);
 
-        gallery=(Button)findViewById(R.id.btnGallary);
-        camera=(Button)findViewById(R.id.btncamera);
-        address=(Button)findViewById(R.id.btnAddress);
-        upload=(Button)findViewById(R.id.btnUpload);
-        textAddress=(TextView)findViewById(R.id.textAddress);
-        img=(ImageView)findViewById(R.id.imgcomp);
+        geocoder = new Geocoder(this, Locale.getDefault());
 
 
-        storage=FirebaseStorage.getInstance();
-        storageReference=storage.getReference();
+        progressdailog = new ProgressDialog(this);
+
+        progressdailog.setMessage("Retrieving Address wait...");
+        progressdailog.setCancelable(false);
+
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            Address = location.toString();
+                            //Toast.makeText(ComplaintActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+        gallery = (Button) findViewById(R.id.btnGallary);
+        camera = (Button) findViewById(R.id.btncamera);
+        address = (Button) findViewById(R.id.btnAddress);
+        upload = (Button) findViewById(R.id.btnUpload);
+        textAddress = (TextView) findViewById(R.id.textAddress);
+        img = (ImageView) findViewById(R.id.imgcomp);
+
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
-        ComplaintID=UUID.randomUUID().toString();
+        ComplaintID = UUID.randomUUID().toString();
 
 
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
 
         }
 
 
-
-
-        gallery.setOnClickListener(new View.OnClickListener()
-        {
+        gallery.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 chooseImage();
             }
         });
 
-        camera.setOnClickListener(new View.OnClickListener()
-        {
+        camera.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            public void onClick(View view) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
               /*  File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                 String pictureName = getPictureName();
@@ -119,53 +155,64 @@ public class ComplaintActivity extends AppCompatActivity implements LocationList
                 startActivityForResult(intent,CAMERA_REQUEST);
 
                 */
-                startActivityForResult(intent,0);
+                startActivityForResult(intent, 0);
             }
         });
 
-        address.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Toast.makeText(ComplaintActivity.this, "Before", Toast.LENGTH_SHORT).show();
-                Toast.makeText(ComplaintActivity.this,LoginActivity.num(),Toast.LENGTH_LONG).show();
+        address.setOnClickListener(new View.OnClickListener() {
+            @Override//get address.
+            public void onClick(View view) {
 
-                getLocation();
-                Toast.makeText(ComplaintActivity.this, "After", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
+
+                try {
+
+                    progressdailog.show();
+
+                    textAddress.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textAddress.setText(getLocation());
+                            progressdailog.dismiss();
+
+                        }
+                    }, 10000);
+
+
+                } catch (Exception e) {
+                    Toast.makeText(ComplaintActivity.this, "Not possible to get location", Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
 
-        upload.setOnClickListener(new View.OnClickListener()
-        {
+        upload.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 uploadAddress();
-                    uploadImage();
+                uploadImage();
 
-                    Toast.makeText(ComplaintActivity.this, "AddressUploded", Toast.LENGTH_SHORT).show();
-
-
+                Toast.makeText(ComplaintActivity.this, "Address Uploaded", Toast.LENGTH_SHORT).show();
 
             }
         });
     }
 
 
+    public void uploadAddress() {
+        Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
+        String p = ((TextView) findViewById(R.id.textAddress)).getText().toString();
+        Toast.makeText(ComplaintActivity.this, ComplaintID, Toast.LENGTH_LONG).show();
+        Toast.makeText(ComplaintActivity.this, p, Toast.LENGTH_LONG).show();
 
-    public Boolean uploadAddress()
-    {
-        Toast.makeText(ComplaintActivity.this,LoginActivity.num(),Toast.LENGTH_LONG).show();
-        String p=((TextView)findViewById(R.id.textAddress)).getText().toString();
-        Toast.makeText(ComplaintActivity.this,ComplaintID,Toast.LENGTH_LONG).show();
-        Toast.makeText(ComplaintActivity.this,p,Toast.LENGTH_LONG).show();
+        Complaint a = new Complaint(LoginActivity.num(), ComplaintID, p);
 
-        Complaint a= new Complaint(LoginActivity.num(),ComplaintID,p);
+
         mDatabase.child("Database").child(LoginActivity.num()).child(ComplaintID).setValue(a);
 
-        return true;
     }
+
 
  /*   private String getPictureName()
     {
@@ -177,8 +224,7 @@ public class ComplaintActivity extends AppCompatActivity implements LocationList
   */
 
 
-    private void chooseImage()
-    {
+    private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -186,120 +232,79 @@ public class ComplaintActivity extends AppCompatActivity implements LocationList
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             filePath = data.getData();
-            try
-            {
+            try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 img.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            Toast.makeText(this,filePath+" ",Toast.LENGTH_LONG).show();
-        }
-        else
-            {
-                Toast.makeText(this,filePath+" ",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
 
-                 Bitmap bitmap=(Bitmap)data.getExtras().get("data");
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             img.setImageBitmap(bitmap);
-            }
+        }
     }
 
-    void getLocation()
-    {
+    public String getLocation() {
         try {
+
+
             Toast.makeText(ComplaintActivity.this, "In get location", Toast.LENGTH_SHORT).show();
 
-            locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 500, this);
 
-        }
-        catch(SecurityException e) {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+            setAddress = "ADDRESS\n" + addresses.get(0).getAddressLine(0);
+
+
+            //TimeUnit.SECONDS.sleep(10);
+            return setAddress;
+        } catch (Exception e) {
             Toast.makeText(ComplaintActivity.this, "Caught error", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-    }
-    @Override
-    public void onLocationChanged(Location location)
-    {
-        //locationText.setText(("Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude()));
-
-        try {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            // locationText.setText(locationText.getText() + "\n"+addresses.get(0).getAddressLine(0)+"\n"+
-            //     addresses.get(0).getAddressLine(1)+"\n"+addresses.get(0).getAddressLine(2));
-            textAddress.setText(textAddress.getText()+addresses.get(0).getAddressLine(0));
-        }catch(Exception e)
-        {
-
-        }
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider)
-    {
-        Toast.makeText(ComplaintActivity.this, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras)
-    {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
+        return setAddress;
     }
 
 
-    private void uploadImage()
-    {
+    private void uploadImage() {
 
-        if(filePath != null)
-        {
+        if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
+            progressDialog.setCancelable(false);
             progressDialog.show();
 
-           StorageReference ref = storageReference.child(LoginActivity.num()+"/"+ComplaintID);
+            StorageReference ref = storageReference.child(LoginActivity.num() + "/" + ComplaintID);
             ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
-                    {
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
-                        {
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
                             Toast.makeText(ComplaintActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener()
-                    {
+                    .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e)
-                        {
+                        public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(ComplaintActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ComplaintActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>()
-                    {
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
         }

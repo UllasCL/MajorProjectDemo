@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "532256980033-vbmmm0q6807rgkfd11hkr5bqe1di6acf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ullas.majorproject",
+            "certificate_hash": "eb89dbe78c829b14db969b62bbbe9945b07e797d"
+          }
+        },
+        {
           "client_id": "532256980033-sktiv7gavusdogihhm6fcao5nj5a7a3f.apps.googleusercontent.com",
           "client_type": 3
         }

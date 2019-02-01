@@ -20,18 +20,27 @@ import java.util.List;
 import java.util.Locale;
 
 public class SelectActivity extends AppCompatActivity {
-    Button complaint;
+    Button complaint,complaintList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select);
+
         complaint = (Button) findViewById(R.id.btncmp);
+        complaintList = (Button)findViewById(R.id.btncmpList);
 
         complaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectActivity.this, ComplaintActivity.class);
+                startActivity(intent);
+            }
+        });
+        complaintList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SelectActivity.this, Complaint.class);
                 startActivity(intent);
             }
         });

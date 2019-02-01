@@ -10,9 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -31,7 +28,7 @@
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".SelectActivity" />
-        <activity android:name=".ComplaintActivity"></activity>
+        <activity android:name=".ComplaintActivity" />
     </application>
 
 </manifest>

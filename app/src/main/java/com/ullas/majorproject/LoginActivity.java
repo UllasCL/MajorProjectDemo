@@ -117,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void validate(String username, String password) {
         progressdailog.setMessage("Wait a minute until you are verified");
+        progressdailog.setCancelable(false);
         progressdailog.show();
         firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
