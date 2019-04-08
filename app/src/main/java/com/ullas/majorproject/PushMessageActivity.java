@@ -2,6 +2,7 @@ package com.ullas.majorproject;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -23,10 +24,14 @@ public class PushMessageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push_message);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         Bundle extras = getIntent().getExtras();
-        submit=(Button)findViewById(R.id.buttonfeedback);
-        message=(TextView)findViewById(R.id.message);
-        rating=(RatingBar)findViewById(R.id.ratingBar);
+        submit= findViewById(R.id.buttonfeedback);
+        message= findViewById(R.id.message);
+        rating= findViewById(R.id.ratingBar);
 
         extras.getString("date");
         extras.getString("message");

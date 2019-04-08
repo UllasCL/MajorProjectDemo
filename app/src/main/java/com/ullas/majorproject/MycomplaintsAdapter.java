@@ -24,11 +24,11 @@ public class MycomplaintsAdapter extends RecyclerView.Adapter<MycomplaintsAdapte
 
         public MyViewHolder(View view) {
             super(view);
-            uid = (TextView) view.findViewById(R.id.uid);
-            compid = (TextView) view.findViewById(R.id.compid);
+            uid = view.findViewById(R.id.uid);
+            compid = view.findViewById(R.id.compid);
             //  im = (ImageView) view.findViewById(R.id.imageView);
-            details= (Button) view.findViewById(R.id.det);
-            tvdate=(TextView)view.findViewById(R.id.tvdate);
+            details= view.findViewById(R.id.det);
+            tvdate= view.findViewById(R.id.tvdate);
             details.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

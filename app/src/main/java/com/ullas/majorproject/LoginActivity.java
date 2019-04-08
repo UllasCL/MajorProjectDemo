@@ -48,38 +48,38 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.animation);
+        ConstraintLayout layout = findViewById(R.id.animation);
         AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
         animation.setFillAfter(true);
         animation.setDuration(1200);
         layout.startAnimation(animation);
 
 
-        Name = (EditText) findViewById(R.id.etName);
-        Password = (EditText) findViewById(R.id.etPassword);
-        Info = (TextView) findViewById(R.id.tvInfo);
-        Login = (Button) findViewById(R.id.btnLogin);
-        TextView userRegistraion = (TextView) findViewById(R.id.tvRegister);
+        Name = findViewById(R.id.etName);
+        Password = findViewById(R.id.etPassword);
+        Info = findViewById(R.id.tvInfo);
+        Login = findViewById(R.id.btnLogin);
+        TextView userRegistraion = findViewById(R.id.tvRegister);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
         progressdailog = new ProgressDialog(this);
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+        //FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
-
-    /*  if(user !=null)
-        {
-            finish();
-            email=firebaseAuth.getCurrentUser().getEmail();
-              startActivity( new Intent(Login.this,Remainder.class));
-        }*/
+//
+//      if(user !=null)
+//        {
+//            finish();
+//            email=firebaseAuth.getCurrentUser().getEmail();
+//              startActivity( new Intent(LoginActivity.this,SelectActivity.class));
+//        }
 
 
         Login.setOnClickListener(new View.OnClickListener() {
@@ -105,8 +105,6 @@ public class LoginActivity extends AppCompatActivity {
                         Login.setVisibility(View.INVISIBLE);
                         Login.setEnabled(false);
                     }
-
-
                     //Intent intent=new Intent(Login.this,Login.class);
                 }
 
@@ -133,8 +131,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     progressdailog.dismiss();
-                    firebasetoken=FirebaseInstanceId.getInstance().getToken();
-                    Log.d("FCMToken", "token "+firebasetoken );
+                    firebasetoken = FirebaseInstanceId.getInstance().getToken();
+                    Log.d("FCMToken", "token " + firebasetoken);
                     mDatabase.child("FCMtokens").child(LoginActivity.num()).child("token").setValue(LoginActivity.firebasetoken);
                     Toast.makeText((LoginActivity.this), "Login successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, SelectActivity.class));

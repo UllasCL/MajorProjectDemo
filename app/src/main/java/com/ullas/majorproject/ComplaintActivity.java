@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,32 +49,21 @@ public class ComplaintActivity extends AppCompatActivity {
     TextView textAddress;
     ImageView img;
     Bitmap bitmap;
-    int flag=0;
+    int flag = 0;
 
     FirebaseStorage storage;
     StorageReference storageReference;
-
     LocationManager locationManager;
-
     private Uri filePath;
     // public static final int CAMERA_REQUEST = 10;
-
     private final int PICK_IMAGE_REQUEST = 71;
-
     private DatabaseReference mDatabase;
-
     public String ComplaintID;
-
-
     public double latitude, longitude;
     public String Address, setAddress;
-
     Geocoder geocoder;
     List<android.location.Address> addresses;
-
     private ProgressDialog progressdailog;
-
-
     private FusedLocationProviderClient mFusedLocationClient;
 
     @SuppressLint("MissingPermission")
@@ -82,14 +72,14 @@ public class ComplaintActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         geocoder = new Geocoder(this, Locale.getDefault());
-
-
         progressdailog = new ProgressDialog(this);
 
         progressdailog.setMessage("Retrieving Address wait...");
         progressdailog.setCancelable(false);
-
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mFusedLocationClient.getLastLocation()
@@ -107,29 +97,23 @@ public class ComplaintActivity extends AppCompatActivity {
                 });
 
 
-        gallery = (Button) findViewById(R.id.btnGallary);
-        camera = (Button) findViewById(R.id.btncamera);
-        address = (Button) findViewById(R.id.btnAddress);
-        upload = (Button) findViewById(R.id.btnUpload);
-        textAddress = (TextView) findViewById(R.id.textAddress);
-        img = (ImageView) findViewById(R.id.imgcomp);
-
+        gallery = findViewById(R.id.btnGallary);
+        camera = findViewById(R.id.btncamera);
+        address = findViewById(R.id.btnAddress);
+        upload = findViewById(R.id.btnUpload);
+        textAddress = findViewById(R.id.textAddress);
+        img = findViewById(R.id.imgcomp);
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-
         ComplaintID = UUID.randomUUID().toString();
 
-
         if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-
         }
-
 
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,24 +138,20 @@ public class ComplaintActivity extends AppCompatActivity {
 
                 try {
 
-                  //  progressdailog.show();
+                      progressdailog.show();
 
-                   /* textAddress.postDelayed(new Runnable() {
+                    textAddress.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             textAddress.setText(getLocation());
                             progressdailog.dismiss();
 
                         }
-                    }, 10000);*/
+                    }, 5000);
                     textAddress.setText(getLocation());
-
-
                 } catch (Exception e) {
                     Toast.makeText(ComplaintActivity.this, "Not possible to get location", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
         });
 
@@ -179,18 +159,14 @@ public class ComplaintActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 uploadAddress();
-                if(flag==1)
+                if (flag == 1)
                     uploadImage();
                 else
                     uploadImage1(bitmap);
-
-
                 Toast.makeText(ComplaintActivity.this, "Address Uploaded", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
-
 
     public void uploadAddress() {
         Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
@@ -198,17 +174,16 @@ public class ComplaintActivity extends AppCompatActivity {
         //Toast.makeText(ComplaintActivity.this, ComplaintID, Toast.LENGTH_LONG).show();
         //Toast.makeText(ComplaintActivity.this, p, Toast.LENGTH_LONG).show();
 
-        long time=System.currentTimeMillis();
-        String time1=Long.toString(time);
+        long time = System.currentTimeMillis();
+        String time1 = Long.toString(time);
 
-        Date d=new Date();
-        String datestring=d.toString();
-        String shortdate=datestring.replace("GMT+05:30", "");
-        Complaint a = new Complaint(LoginActivity.num(), ComplaintID, p,"0"," ","1",time1,"0",shortdate);
+        Date d = new Date();
+        String datestring = d.toString();
+        String shortdate = datestring.replace("GMT+05:30", "");
+        Complaint a = new Complaint(LoginActivity.num(), ComplaintID, p, "0", " ", "1", time1, "0", shortdate);
         mDatabase.child("Database").child(LoginActivity.num()).child(ComplaintID).setValue(a);
 
     }
-
 
  /*   private String getPictureName()
     {
@@ -218,8 +193,6 @@ public class ComplaintActivity extends AppCompatActivity {
 
     }
   */
-
-
     private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -237,20 +210,20 @@ public class ComplaintActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 img.setImageBitmap(bitmap);
-                flag=1;
+                flag = 1;
             } catch (IOException e) {
                 e.printStackTrace();
             }
             Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
-        } else  {
-           // Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
+        } else {
+            // Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
 
             bitmap = (Bitmap) data.getExtras().get("data");
             img.setImageBitmap(bitmap);
-            flag=2;
+            flag = 2;
         }
-       // bitmap = (Bitmap) data.getExtras().get("data");
-       // img.setImageBitmap(bitmap);
+        // bitmap = (Bitmap) data.getExtras().get("data");
+        // img.setImageBitmap(bitmap);
     }
 
     public String getLocation() {
@@ -283,7 +256,7 @@ public class ComplaintActivity extends AppCompatActivity {
             progressDialog.setCancelable(false);
             progressDialog.show();
 
-            StorageReference ref = storageReference.child(LoginActivity.num() + "/" + ComplaintID+"/1");
+            StorageReference ref = storageReference.child(LoginActivity.num() + "/" + ComplaintID + "/1");
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -315,7 +288,7 @@ public class ComplaintActivity extends AppCompatActivity {
         progressDialog.setTitle("Uploading...");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        final StorageReference ref = storageReference.child(LoginActivity.num() + "/" + ComplaintID+"/1");
+        final StorageReference ref = storageReference.child(LoginActivity.num() + "/" + ComplaintID + "/1");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);

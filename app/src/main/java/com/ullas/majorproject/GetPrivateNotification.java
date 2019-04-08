@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,14 +41,18 @@ public class GetPrivateNotification extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_private_notification);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         Bundle extras = getIntent().getExtras();
 
         geocoder = new Geocoder(this, Locale.getDefault());
-        heading=(TextView)findViewById(R.id.heading);
-        message=(TextView)findViewById(R.id.pmessage);
-        address=(TextView)findViewById(R.id.paddress) ;
-        getaddress=(Button)findViewById(R.id.getpaddress);
-        upload=(Button)findViewById(R.id.btnuploadp);
+        heading= findViewById(R.id.heading);
+        message= findViewById(R.id.pmessage);
+        address= findViewById(R.id.paddress);
+        getaddress= findViewById(R.id.getpaddress);
+        upload= findViewById(R.id.btnuploadp);
 
         heading.setText("Trash is Full !!");
         message.setText("Please make a complaint so that our agents arrive to your place and make it clean");

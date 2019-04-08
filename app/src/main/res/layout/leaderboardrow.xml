@@ -22,7 +22,6 @@
         android:textColor="@color/title"
         android:textSize="16dp"
         android:gravity="center"
-        android:background="@drawable/shape"
         android:textStyle="bold" />
 
     <TextView
@@ -36,8 +35,6 @@
         android:textColor="@color/title"
         android:gravity="center"
         android:textSize="16dp"
-        android:background="@drawable/shape"
         android:textStyle="bold" />
-
-
+    
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,9 +18,12 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        Button captue = (Button) findViewById(R.id.btncpt);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        img = (ImageView) findViewById(R.id.imgcpt);
+        Button captue = findViewById(R.id.btncpt);
+
+        img = findViewById(R.id.imgcpt);
 
         captue.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -14,7 +14,6 @@ import java.net.URL;
 
 public class FCMNotification {
 
-
     public final static String AUTH_KEY_FCM = "AIzaSyD-vhyivEJyH5ikX2CBDGAvLR7FMOpesU0";
     public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
 
@@ -62,7 +61,6 @@ public class FCMNotification {
         System.out.println("GCM Notification is sent successfully");
 
         return result;
-
     }
 
     public static void main(String[] args) {
