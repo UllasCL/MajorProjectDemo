@@ -26,7 +26,6 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".CameraActivity" />
         <activity android:name=".SelectActivity" />
         <activity android:name=".ComplaintActivity" />
     </application>

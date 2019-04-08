@@ -2,13 +2,14 @@ package com.ullas.majorproject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -21,15 +22,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.storage.StorageReference;
 
 public class LoginActivity extends AppCompatActivity {
 
+    static String firebasetoken;
     private EditText Name;
     private EditText Password;
     private TextView Info;
     private Button Login, admin;
     private int counter = 5;
     public static String email;
+    StorageReference storageReference;
+    private DatabaseReference mDatabase;
 
     private ProgressDialog progressdailog;
     private FirebaseAuth firebaseAuth;
@@ -43,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.animation);
         AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
@@ -124,6 +133,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     progressdailog.dismiss();
+                    firebasetoken=FirebaseInstanceId.getInstance().getToken();
+                    Log.d("FCMToken", "token "+firebasetoken );
+                    mDatabase.child("FCMtokens").child(LoginActivity.num()).child("token").setValue(LoginActivity.firebasetoken);
                     Toast.makeText((LoginActivity.this), "Login successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginActivity.this, SelectActivity.class));
                     Name.setText(null);

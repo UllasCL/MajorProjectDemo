@@ -1,0 +1,102 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TableRow>
+
+        <TextView
+            android:layout_width="94dp"
+            android:layout_height="100px"
+            android:layout_column="1"
+            android:text="User ID :" />
+
+        <TextView
+            android:id="@+id/uid"
+            android:layout_width="310dp"
+            android:layout_height="100px"
+            android:layout_column="2" />
+
+    </TableRow>
+
+    <TableRow>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:layout_column="1"
+            android:text="Complaint ID :" />
+
+        <TextView
+            android:id="@+id/cid"
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:width="200px" />
+    </TableRow>
+
+
+    <TableRow>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:layout_column="1"
+            android:text="Status:" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:width="200px" />
+    </TableRow>
+
+    <TableRow>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="200px"
+            android:layout_column="1"
+            android:text="Address :" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="200px"
+            android:width="100px" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="400px"
+            android:layout_column="1"
+            android:text="Complaint Photo :" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="500px"
+            android:layout_height="400px"
+            android:layout_column="2" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="500px"
+            android:layout_column="1"
+            android:text="Resolved Photo :"
+            android:id="@+id/resolved" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="500px"
+            android:layout_height="500px"
+            android:layout_column="2" />
+    </TableRow>
+
+
+
+
+</TableLayout>

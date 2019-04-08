@@ -2,35 +2,33 @@ package com.ullas.majorproject;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Environment;
-import android.os.Handler;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -38,21 +36,19 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class ComplaintActivity extends AppCompatActivity {
     Button gallery, camera, address, upload;
     TextView textAddress;
     ImageView img;
+    Bitmap bitmap;
+    int flag=0;
 
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -73,7 +69,7 @@ public class ComplaintActivity extends AppCompatActivity {
     public String Address, setAddress;
 
     Geocoder geocoder;
-    List<Address> addresses;
+    List<android.location.Address> addresses;
 
     private ProgressDialog progressdailog;
 
@@ -146,15 +142,6 @@ public class ComplaintActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-              /*  File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                String pictureName = getPictureName();
-                File imageFile = new File(pictureDirectory, pictureName);
-                filePath = Uri.fromFile(imageFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, filePath);
-                startActivityForResult(intent,CAMERA_REQUEST);
-
-                */
                 startActivityForResult(intent, 0);
             }
         });
@@ -167,16 +154,17 @@ public class ComplaintActivity extends AppCompatActivity {
 
                 try {
 
-                    progressdailog.show();
+                  //  progressdailog.show();
 
-                    textAddress.postDelayed(new Runnable() {
+                   /* textAddress.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             textAddress.setText(getLocation());
                             progressdailog.dismiss();
 
                         }
-                    }, 10000);
+                    }, 10000);*/
+                    textAddress.setText(getLocation());
 
 
                 } catch (Exception e) {
@@ -191,7 +179,11 @@ public class ComplaintActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 uploadAddress();
-                uploadImage();
+                if(flag==1)
+                    uploadImage();
+                else
+                    uploadImage1(bitmap);
+
 
                 Toast.makeText(ComplaintActivity.this, "Address Uploaded", Toast.LENGTH_SHORT).show();
 
@@ -203,12 +195,16 @@ public class ComplaintActivity extends AppCompatActivity {
     public void uploadAddress() {
         Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
         String p = ((TextView) findViewById(R.id.textAddress)).getText().toString();
-        Toast.makeText(ComplaintActivity.this, ComplaintID, Toast.LENGTH_LONG).show();
-        Toast.makeText(ComplaintActivity.this, p, Toast.LENGTH_LONG).show();
+        //Toast.makeText(ComplaintActivity.this, ComplaintID, Toast.LENGTH_LONG).show();
+        //Toast.makeText(ComplaintActivity.this, p, Toast.LENGTH_LONG).show();
 
-        Complaint a = new Complaint(LoginActivity.num(), ComplaintID, p);
+        long time=System.currentTimeMillis();
+        String time1=Long.toString(time);
 
-
+        Date d=new Date();
+        String datestring=d.toString();
+        String shortdate=datestring.replace("GMT+05:30", "");
+        Complaint a = new Complaint(LoginActivity.num(), ComplaintID, p,"0"," ","1",time1,"0",shortdate);
         mDatabase.child("Database").child(LoginActivity.num()).child(ComplaintID).setValue(a);
 
     }
@@ -241,16 +237,20 @@ public class ComplaintActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 img.setImageBitmap(bitmap);
+                flag=1;
             } catch (IOException e) {
                 e.printStackTrace();
             }
             Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
+        } else  {
+           // Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
 
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            bitmap = (Bitmap) data.getExtras().get("data");
             img.setImageBitmap(bitmap);
+            flag=2;
         }
+       // bitmap = (Bitmap) data.getExtras().get("data");
+       // img.setImageBitmap(bitmap);
     }
 
     public String getLocation() {
@@ -283,7 +283,7 @@ public class ComplaintActivity extends AppCompatActivity {
             progressDialog.setCancelable(false);
             progressDialog.show();
 
-            StorageReference ref = storageReference.child(LoginActivity.num() + "/" + ComplaintID);
+            StorageReference ref = storageReference.child(LoginActivity.num() + "/" + ComplaintID+"/1");
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -308,5 +308,50 @@ public class ComplaintActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void uploadImage1(Bitmap bitmap) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        final StorageReference ref = storageReference.child(LoginActivity.num() + "/" + ComplaintID+"/1");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+        byte[] data = baos.toByteArray();
+
+        final UploadTask uploadTask = ref.putBytes(data);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                progressDialog.dismiss();
+                Toast.makeText(ComplaintActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        return ref.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downUri = task.getResult();
+                            Log.d("Final URL", "onComplete: Url: " + downUri.toString());
+                        }
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(ComplaintActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

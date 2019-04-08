@@ -1,15 +1,29 @@
 package com.ullas.majorproject;
 
 public class Complaint {
-    String userID, complaintID, complaintAddress;
+    String userID, complaintID, complaintAddress,resolved,agentno,publicORprivate,time,clearedtime,date;
 
     public Complaint() {
     }
 
-    public Complaint(String UserID, String ComplaintID, String ComplaintAddress) {
-        this.userID = UserID;
-        this.complaintID = ComplaintID;
-        this.complaintAddress = ComplaintAddress;
+    public Complaint(String userID, String complaintID, String complaintAddress, String resolved, String agentno, String publicORprivate, String time, String clearedtime, String date) {
+        this.userID = userID;
+        this.complaintID = complaintID;
+        this.complaintAddress = complaintAddress;
+        this.resolved = resolved;
+        this.agentno = agentno;
+        this.publicORprivate = publicORprivate;
+        this.time = time;
+        this.clearedtime = clearedtime;
+        this.date = date;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getUserID() {
@@ -18,6 +32,46 @@ public class Complaint {
 
     public String getComplaintID() {
         return complaintID;
+    }
+
+    public String getClearedtime() {
+        return clearedtime;
+    }
+
+    public void setClearedtime(String clearedtime) {
+        this.clearedtime = clearedtime;
+    }
+
+    public String getResolved() {
+        return resolved;
+    }
+
+    public void setResolved(String resolved) {
+        this.resolved = resolved;
+    }
+
+    public String getAgentno() {
+        return agentno;
+    }
+
+    public void setAgentno(String agentno) {
+        this.agentno = agentno;
+    }
+
+    public String getPublicORprivate() {
+        return publicORprivate;
+    }
+
+    public void setPublicORprivate(String publicORprivate) {
+        this.publicORprivate = publicORprivate;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getAddress() {
