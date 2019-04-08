@@ -1,19 +1,30 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_bar">
+    </include>
+
 
     <TableRow>
 
         <TextView
             android:layout_width="94dp"
-            android:layout_height="100px"
+            android:layout_height="55dp"
             android:layout_column="1"
+            android:gravity="center"
+            android:background="@drawable/shape"
             android:text="User ID :" />
 
         <TextView
             android:id="@+id/uid"
-            android:layout_width="310dp"
-            android:layout_height="100px"
+            android:layout_width="306dp"
+            android:layout_height="55dp"
+            android:gravity="center"
+            android:background="@drawable/shape"
             android:layout_column="2" />
 
     </TableRow>
@@ -23,14 +34,18 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="100px"
+            android:layout_height="55dp"
             android:layout_column="1"
+            android:gravity="center"
+            android:background="@drawable/shape"
             android:text="Complaint ID :" />
 
         <TextView
             android:id="@+id/cid"
             android:layout_width="wrap_content"
-            android:layout_height="100px"
+            android:layout_height="55dp"
+            android:gravity="center"
+            android:background="@drawable/shape"
             android:width="200px" />
     </TableRow>
 
@@ -40,15 +55,56 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="100px"
+            android:layout_height="55dp"
             android:layout_column="1"
+            android:gravity="center"
+            android:background="@drawable/shape"
             android:text="Status:" />
 
         <TextView
             android:id="@+id/status"
             android:layout_width="wrap_content"
-            android:layout_height="100px"
+            android:layout_height="55dp"
+            android:gravity="center"
+            android:background="@drawable/shape"
             android:width="200px" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="170dp"
+            android:layout_column="1"
+            android:gravity="center"
+            android:background="@drawable/shape"
+            android:text="Complaint Photo :" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="306dp"
+            android:layout_height="170dp"
+            android:gravity="center"
+            android:background="@drawable/shape"
+            android:layout_column="2" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="170dp"
+            android:layout_column="1"
+            android:text=" Resolved\n Photo :"
+            android:gravity="center"
+            android:background="@drawable/shape"
+            android:id="@+id/resolved" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="306dp"
+            android:layout_height="170dp"
+            android:layout_column="2"
+            android:background="@drawable/shape"
+            android:gravity="center" />
     </TableRow>
 
     <TableRow>
@@ -56,44 +112,19 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="200px"
+            android:layout_height="60dp"
             android:layout_column="1"
+            android:background="@drawable/shape"
+            android:gravity="center"
             android:text="Address :" />
 
         <TextView
             android:id="@+id/address"
             android:layout_width="wrap_content"
-            android:layout_height="200px"
-            android:width="100px" />
-    </TableRow>
-
-    <TableRow>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="400px"
-            android:layout_column="1"
-            android:text="Complaint Photo :" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="500px"
-            android:layout_height="400px"
-            android:layout_column="2" />
-    </TableRow>
-
-    <TableRow>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="500px"
-            android:layout_column="1"
-            android:text="Resolved Photo :"
-            android:id="@+id/resolved" />
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="500px"
-            android:layout_height="500px"
-            android:layout_column="2" />
+            android:layout_height="60dp"
+            android:width="100px"
+            android:background="@drawable/shape"
+            android:gravity="center" />
     </TableRow>
 
 

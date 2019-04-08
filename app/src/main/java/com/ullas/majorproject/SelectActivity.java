@@ -16,7 +16,6 @@ import java.util.List;
 
 public class SelectActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
     private Menuadapter adapter;
     private List<Menurow> albumList;
 
@@ -29,14 +28,14 @@ public class SelectActivity extends AppCompatActivity {
 
         // initCollapsingToolbar();
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         albumList = new ArrayList<>();
         adapter = new Menuadapter(this, albumList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -52,11 +51,11 @@ public class SelectActivity extends AppCompatActivity {
 
     private void prepareAlbums() {
         int[] covers = new int[]{
-                R.drawable.newcomplaint,
-                R.drawable.complaints,
-                R.drawable.leaders,
-                R.drawable.homewaste,
-                R.drawable.vehicletrack
+                R.drawable.createcomplaint,
+                R.drawable.listcomplaints,
+                R.drawable.leaderboard,
+                R.drawable.domesticgarbage,
+                R.drawable.trackvehicles
 
         };
         albumList.clear();
@@ -76,8 +75,6 @@ public class SelectActivity extends AppCompatActivity {
 
         a = new Menurow("Track vehicle",  covers[4]);
         albumList.add(a);
-
-
 
 
         adapter.notifyDataSetChanged();

@@ -17,6 +17,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Leaderboard"></activity>
+        <activity android:name=".GetPrivateNotification">
+            <intent-filter>
+                <action android:name="dustbin_full" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".PushMessageActivity">
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_1" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MyComplaintDetails" />
+        <activity android:name=".Mycomplaints" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,8 +43,10 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegistrationActivity" />
+        <activity android:name=".CameraActivity" />
         <activity android:name=".SelectActivity" />
         <activity android:name=".ComplaintActivity" />
     </application>
+
 
 </manifest>

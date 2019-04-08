@@ -21,13 +21,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
-               /* try {
-                    FCMNotification.sendPushNotification("d7StVzAtHsw:APA91bEHnux5fiKhdhwSo52SBIV_02z45HT8Qx7DR40LU_ljA7hbWzwmwh5lr7nld74zYyThW_-pt_ifZk9uIvYbARRl3LBDeE-ATu4EglPzPJrM2Mx909EN5cr9LMAsNbtWriyaDnlV");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }*/
             }
         });
     }
