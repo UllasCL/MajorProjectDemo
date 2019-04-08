@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText Name;
     private EditText Password;
     private TextView Info;
-    private Button Login, admin;
+    private Button Login;
     private int counter = 5;
     public static String email;
 

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SelectActivity extends AppCompatActivity {
-    Button complaint,complaintList;
+    Button complaint, complaintList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class SelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select);
 
         complaint = (Button) findViewById(R.id.btncmp);
-        complaintList = (Button)findViewById(R.id.btncmpList);
+        complaintList = (Button) findViewById(R.id.btncmpList);
 
         complaint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,5 +46,9 @@ public class SelectActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
 }
