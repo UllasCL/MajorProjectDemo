@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         goa = findViewById(R.id.Go);
-
         goa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

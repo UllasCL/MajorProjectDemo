@@ -26,9 +26,7 @@ public class SelectActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // initCollapsingToolbar();
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
         albumList = new ArrayList<>();
         adapter = new Menuadapter(this, albumList);
@@ -38,7 +36,6 @@ public class SelectActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(5), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
         prepareAlbums();
 
       /*  try {
@@ -48,15 +45,14 @@ public class SelectActivity extends AppCompatActivity {
         }*/
     }
 
-
     private void prepareAlbums() {
         int[] covers = new int[]{
                 R.drawable.createcomplaint,
                 R.drawable.listcomplaints,
                 R.drawable.leaderboard,
                 R.drawable.domesticgarbage,
-                R.drawable.trackvehicles
-
+                R.drawable.trackvehicles,
+                R.drawable.createcomplaint
         };
         albumList.clear();
 
@@ -72,14 +68,14 @@ public class SelectActivity extends AppCompatActivity {
         a = new Menurow("Domestic garbage complaint",  covers[3]);
         albumList.add(a);
 
-
         a = new Menurow("Track vehicle",  covers[4]);
         albumList.add(a);
 
+        a = new Menurow("Demo", covers[5]);
+        albumList.add(a);
 
         adapter.notifyDataSetChanged();
     }
-
     /**
      * RecyclerView item decoration - give equal margin around grid item
      */

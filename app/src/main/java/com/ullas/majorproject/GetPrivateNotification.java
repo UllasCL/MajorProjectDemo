@@ -36,7 +36,7 @@ public class GetPrivateNotification extends AppCompatActivity {
     List<android.location.Address> addresses;
     private FusedLocationProviderClient mFusedLocationClient;
     public String ComplaintID;
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,36 +73,25 @@ public class GetPrivateNotification extends AppCompatActivity {
                     }
                 });
 
-
-
         if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-
         }
-
         getaddress.setOnClickListener(new View.OnClickListener() {
             @Override//get address.
             public void onClick(View view) {
-
                 try {
                     address.setText(getLocation());
-
                 } catch (Exception e) {
                     Toast.makeText(GetPrivateNotification.this, "Not possible to get location", Toast.LENGTH_SHORT).show();
-
                 }
-
             }
         });
-
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String p = getLocation();
                 //Toast.makeText(ComplaintActivity.this, ComplaintID, Toast.LENGTH_LONG).show();
                 //Toast.makeText(ComplaintActivity.this, p, Toast.LENGTH_LONG).show();
-
                 long time=System.currentTimeMillis();
                 String time1=Long.toString(time);
                 ComplaintID = UUID.randomUUID().toString();
@@ -112,7 +101,6 @@ public class GetPrivateNotification extends AppCompatActivity {
                 Complaint a = new Complaint("7259289800", ComplaintID, p,"0"," ","2",time1,"0",shortdate);
                 mDatabase.child("Database").child("7259289800").child(ComplaintID).setValue(a);
                 Toast.makeText(GetPrivateNotification.this, "Uploaded", Toast.LENGTH_LONG).show();
-
             }
         });
 
@@ -120,16 +108,9 @@ public class GetPrivateNotification extends AppCompatActivity {
     }
     public String getLocation() {
         try {
-
-
             Toast.makeText(GetPrivateNotification.this, "In get location", Toast.LENGTH_SHORT).show();
-
-
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
             setAddress = "ADDRESS\n" + addresses.get(0).getAddressLine(0);
-
-
             //TimeUnit.SECONDS.sleep(10);
             return setAddress;
         } catch (Exception e) {

@@ -22,15 +22,12 @@ public class CameraActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Button captue = findViewById(R.id.btncpt);
-
         img = findViewById(R.id.imgcpt);
-
         captue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 0);
-
             }
         });
     }
@@ -38,7 +35,6 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         img.setImageBitmap(bitmap);
     }

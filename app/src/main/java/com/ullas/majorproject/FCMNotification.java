@@ -1,7 +1,5 @@
 package com.ullas.majorproject;
 
-
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -11,11 +9,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 public class FCMNotification {
-
-    public final static String AUTH_KEY_FCM = "AIzaSyD-vhyivEJyH5ikX2CBDGAvLR7FMOpesU0";
-    public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
+    private final static String AUTH_KEY_FCM = "AIzaSyD-vhyivEJyH5ikX2CBDGAvLR7FMOpesU0";
+    private final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
 
     public static String sendPushNotification(String deviceToken)
             throws Exception {
@@ -26,13 +22,11 @@ public class FCMNotification {
         conn.setUseCaches(false);
         conn.setDoInput(true);
         conn.setDoOutput(true);
-
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Authorization", "key=" + AUTH_KEY_FCM);
         conn.setRequestProperty("Content-Type", "application/json");
 
         JSONObject json = new JSONObject();
-
         json.put("to", deviceToken.trim());
         JSONObject info = new JSONObject();
         info.put("title", "notification title"); // Notification title
@@ -44,10 +38,8 @@ public class FCMNotification {
                     conn.getOutputStream());
             wr.write(json.toString());
             wr.flush();
-
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
-
             String output;
             System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
@@ -59,15 +51,11 @@ public class FCMNotification {
             result = "BAD";
         }
         System.out.println("GCM Notification is sent successfully");
-
         return result;
     }
-
     public static void main(String[] args) {
         try {
-            FCMNotification.sendPushNotification("d7StVzAtHsw:APA91bEHnux5fiKhdhwSo52SBIV_02z45HT8Qx7DR40LU_ljA7hbWzwmwh5lr7nld74zYyThW_-pt_ifZk9uIvYbARRl3LBDeE-ATu4EglPzPJrM2Mx909EN5cr9LMAsNbtWriyaDnlV");
-        } catch (IOException e) {
-            e.printStackTrace();
+            FCMNotification.sendPushNotification("eVaZNcNSSoA:APA91bHngjhWDOdCOIMijxyyX4dKao2pEz8-L7tF1lFCBmEOU0TfgHHKndLlGvX8ZQHf36jzCjd7HfHqq1wNJxSvB80yi7vXQWElHc2GBCQS6Y2Qh6FL-b5uwZFVoUGz-fK4GR6IBdIT");
         } catch (Exception e) {
             e.printStackTrace();
         }

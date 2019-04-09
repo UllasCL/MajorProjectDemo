@@ -56,12 +56,10 @@ public class MyComplaintDetails extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-
                     // Toast.makeText(details.this,postSnapshot.getKey(),Toast.LENGTH_LONG).show();
                     for (DataSnapshot postSnapshot1 : postSnapshot.getChildren()) {
                         String did = postSnapshot1.getKey();
                         //  Toast.makeText(details.this,postSnapshot1.getKey(),Toast.LENGTH_LONG).show();
-
                         if (did.equals(id)) {
                             Complaint c = postSnapshot1.getValue(Complaint.class);
                             String uid = c.getUserID();
@@ -80,15 +78,10 @@ public class MyComplaintDetails extends AppCompatActivity {
                             tcid.setText(ucid);
                             tadd.setText(uadd);
                             status.setText(status1);
-
                             tadd.getLayoutParams().height= 300;
                             tadd.getLayoutParams().width= 200;
-
-
                             // Toast.makeText(MyComplaintDetails.this,uid, Toast.LENGTH_LONG).show();
                             // Toast.makeText(MyComplaintDetails.this,ucid, Toast.LENGTH_LONG).show();
-
-
                             StorageReference mStorageRef1 = FirebaseStorage.getInstance().getReference();
                             final long ONE_MEGABYTE = 1024 * 1024;
                             mStorageRef1.child(uid + "/" + ucid + "/1").getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -101,9 +94,7 @@ public class MyComplaintDetails extends AppCompatActivity {
                                     im.setImageBitmap(bitmap);
                                 }
                             });
-
                             // Toast.makeText(MyComplaintDetails.this,"second", Toast.LENGTH_LONG).show();
-
                             StorageReference mStorageRef2 = FirebaseStorage.getInstance().getReference();
                             mStorageRef2.child(uid + "/" + ucid + "/2").getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                 @Override
@@ -115,16 +106,10 @@ public class MyComplaintDetails extends AppCompatActivity {
                                     im2.setImageBitmap(bitmap);
                                 }
                             });
-
-
                         }
                     }
                 }
-
-
             }
-
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
@@ -133,8 +118,6 @@ public class MyComplaintDetails extends AppCompatActivity {
             }
         };
         mDatabase.addValueEventListener(postListener);
-
-
     }
 }
 

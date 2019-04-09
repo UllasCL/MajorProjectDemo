@@ -30,13 +30,10 @@ public class Leaderboard extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
 
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-
         readvalue();
     }
     void readvalue(){
@@ -44,23 +41,16 @@ public class Leaderboard extends AppCompatActivity {
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot postSnapshot1: dataSnapshot.getChildren()) {
                     long count=postSnapshot1.getChildrenCount();
                   //  Toast.makeText(Leaderboard.this,Long.toString(count),Toast.LENGTH_LONG).show();
                     Leader a=new Leader(postSnapshot1.getKey(),Long.toString(count));
                     leaderlist.add(a);
-
                 }
                 Collections.sort(leaderlist, new MyComparator());
                 mAdapter = new LeaderboardAdapter(leaderlist);
                 recyclerView.setAdapter(mAdapter);
-
-
-
             }
-
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
@@ -68,9 +58,7 @@ public class Leaderboard extends AppCompatActivity {
                 // ...
             }
         };
-
         mDatabase.addListenerForSingleValueEvent(postListener);
-
     }
 }
 
@@ -81,8 +69,6 @@ class MyComparator implements Comparator<Leader> {
         int w0=Integer.parseInt(score1);
         String score2=leader2.getComplaintscount();
         int w1=Integer.parseInt(score2);
-
-
         return (w0 > w1? -1 : (w0 == w1) ? 0 : 1);
     }
 }

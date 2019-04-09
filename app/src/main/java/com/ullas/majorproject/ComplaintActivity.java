@@ -53,7 +53,6 @@ public class ComplaintActivity extends AppCompatActivity {
 
     FirebaseStorage storage;
     StorageReference storageReference;
-    LocationManager locationManager;
     private Uri filePath;
     // public static final int CAMERA_REQUEST = 10;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -95,8 +94,6 @@ public class ComplaintActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
         gallery = findViewById(R.id.btnGallary);
         camera = findViewById(R.id.btncamera);
         address = findViewById(R.id.btnAddress);
@@ -106,9 +103,7 @@ public class ComplaintActivity extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
         ComplaintID = UUID.randomUUID().toString();
 
         if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -121,7 +116,6 @@ public class ComplaintActivity extends AppCompatActivity {
                 chooseImage();
             }
         });
-
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,19 +127,14 @@ public class ComplaintActivity extends AppCompatActivity {
         address.setOnClickListener(new View.OnClickListener() {
             @Override//get address.
             public void onClick(View view) {
-
                 Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
-
                 try {
-
                       progressdailog.show();
-
                     textAddress.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             textAddress.setText(getLocation());
                             progressdailog.dismiss();
-
                         }
                     }, 5000);
                     textAddress.setText(getLocation());
@@ -184,7 +173,6 @@ public class ComplaintActivity extends AppCompatActivity {
         mDatabase.child("Database").child(LoginActivity.num()).child(ComplaintID).setValue(a);
 
     }
-
  /*   private String getPictureName()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
@@ -228,16 +216,9 @@ public class ComplaintActivity extends AppCompatActivity {
 
     public String getLocation() {
         try {
-
-
             Toast.makeText(ComplaintActivity.this, "In get location", Toast.LENGTH_SHORT).show();
-
-
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
             setAddress = "ADDRESS\n" + addresses.get(0).getAddressLine(0);
-
-
             //TimeUnit.SECONDS.sleep(10);
             return setAddress;
         } catch (Exception e) {
@@ -255,7 +236,6 @@ public class ComplaintActivity extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.setCancelable(false);
             progressDialog.show();
-
             StorageReference ref = storageReference.child(LoginActivity.num() + "/" + ComplaintID + "/1");
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

@@ -1,5 +1,6 @@
 package com.ullas.majorproject;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ public class PushMessageActivity extends AppCompatActivity {
     private DatabaseReference mDatabase,mDatabase1;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +41,6 @@ public class PushMessageActivity extends AppCompatActivity {
         extras.getString("uid");
         extras.getString("cid");
 
-
-
        /* StringBuilder keys = new StringBuilder();
         if (extras != null) {
             for (String key : extras.keySet())
@@ -56,17 +56,13 @@ public class PushMessageActivity extends AppCompatActivity {
         cid=extras.getString("cid");
         Toast.makeText(PushMessageActivity.this, aid, Toast.LENGTH_LONG).show();
 
-        // Toast.makeText(PushMessageActivity.this, value, Toast.LENGTH_LONG).show();
-       // Toast.makeText(PushMessageActivity.this, value1, Toast.LENGTH_LONG).show();
         message.setText("\tYour complaint registered on\n"+value+" has been cleared successfully in\n"+value1+".\nPlease go to my complaints for further details.");
-
 
         rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                  ratingvalue=String.valueOf(rating);
                 Toast.makeText(PushMessageActivity.this, ratingvalue, Toast.LENGTH_LONG).show();
-
             }
         });
         submit.setOnClickListener(new View.OnClickListener() {
@@ -77,12 +73,7 @@ public class PushMessageActivity extends AppCompatActivity {
                 mDatabase1 = FirebaseDatabase.getInstance().getReference("Agents/"+aid+"/"+cid);
                 mDatabase1.child("ratingByUser").setValue(ratingvalue);
                 Toast.makeText(PushMessageActivity.this,"Ratings uploaded", Toast.LENGTH_LONG).show();
-
             }
         });
-
-
-
-
     }
 }

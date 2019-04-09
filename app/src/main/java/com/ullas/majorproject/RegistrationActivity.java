@@ -40,7 +40,6 @@ public class RegistrationActivity extends AppCompatActivity {
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mcallbacks;
     String verification_code;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,36 +56,29 @@ public class RegistrationActivity extends AppCompatActivity {
         layout.startAnimation(animation);
 
 
-        userName = (EditText) findViewById(R.id.etUserName);
-        userLogin = (TextView) findViewById(R.id.tvUserLogin);
-        userPassword1 = (EditText) findViewById(R.id.etPassword);
-        userEmail1 = (EditText) findViewById(R.id.etUserEmail);
-        reg = (Button) findViewById(R.id.btnRegister);
-        send = (Button) findViewById(R.id.btSend);
-        phone_number = (TextView) findViewById(R.id.tvph);
+        userName = findViewById(R.id.etUserName);
+        userLogin = findViewById(R.id.tvUserLogin);
+        userPassword1 = findViewById(R.id.etPassword);
+        userEmail1 = findViewById(R.id.etUserEmail);
+        reg = findViewById(R.id.btnRegister);
+        send = findViewById(R.id.btSend);
+        phone_number = findViewById(R.id.tvph);
         phone_number.setVisibility(View.INVISIBLE);
-
 
         // userPassword1.setVisibility(View.INVISIBLE);
         userEmail1.setVisibility(View.INVISIBLE);
-
-
         progressdailog = new ProgressDialog(this);
 
-
         firebaseAuth = FirebaseAuth.getInstance();
-
         mcallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                  Toast.makeText(RegistrationActivity.this, "Verification completed", Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onVerificationFailed(FirebaseException e) {
                 Toast.makeText(RegistrationActivity.this, "Verification Failed", Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(s, forceResendingToken);
@@ -101,11 +93,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (send_sms(v)) {
                     phone_number.setVisibility(View.VISIBLE);
                     phone_number.setText(ph);
-                    // Toast.makeText(Registration.this,ph, Toast.LENGTH_LONG).show();
                     userEmail1.setVisibility(View.VISIBLE);
                     send.setVisibility(View.INVISIBLE);
                     userName.setVisibility(View.INVISIBLE);
-
                 }
             }
         });
@@ -116,7 +106,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
             }
         });
-
     }
 
     public Boolean send_sms(View view) {
@@ -135,7 +124,6 @@ public class RegistrationActivity extends AppCompatActivity {
             return true;
         }
     }
-
 
     public void signInWithcode(PhoneAuthCredential credential) {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -170,8 +158,6 @@ public class RegistrationActivity extends AppCompatActivity {
         signInWithcode(credential);
     }
 
-    //firebase with email
-
     public void EmailLogin() {
         if (Validate()) {
             final String number = ((EditText) findViewById(R.id.etUserName)).getText().toString().trim();
@@ -180,7 +166,6 @@ public class RegistrationActivity extends AppCompatActivity {
             String input = ((EditText) findViewById(R.id.etUserEmail)).getText().toString().trim();
 
             //Toast.makeText(Registration.this, input+" "+verification_code, Toast.LENGTH_LONG).show();
-
 
             firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -196,14 +181,11 @@ public class RegistrationActivity extends AppCompatActivity {
                         userName.setVisibility(View.VISIBLE);
                         userName.setText(null);
                         userEmail1.setText(null);
-
                         // userPassword1.setText("");
                         progressdailog.dismiss();
                     }
                 }
             });
-
-
         }
     }
 
@@ -222,6 +204,4 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         return result;
     }
-
-
 }

@@ -35,14 +35,11 @@ public class MycomplaintsAdapter extends RecyclerView.Adapter<MycomplaintsAdapte
                     // Toast.makeText(v.getContext(),compid.getText(),Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(v.getContext(),MyComplaintDetails.class);
                     intent.putExtra("compid",compid.getText().toString().substring(13));
-
                     v.getContext().startActivity(intent);
                 }
             });
         }
-
     }
-
 
     public MycomplaintsAdapter(List<Complaint> complist) {
         this.complaintListList = complist;
@@ -52,7 +49,6 @@ public class MycomplaintsAdapter extends RecyclerView.Adapter<MycomplaintsAdapte
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.mycomplaintsrow, parent, false);
-
         return new MyViewHolder(itemView);
     }
 

@@ -43,5 +43,9 @@
         <activity android:name=".CameraActivity" />
         <activity android:name=".SelectActivity" />
         <activity android:name=".ComplaintActivity" />
+	    <activity android:name=".ClientDetails" />
+	    <activity
+			    android:name=".SettingsActivity"
+			    android:label="@string/title_activity_settings" />
     </application>
 </manifest>

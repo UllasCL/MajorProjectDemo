@@ -1,5 +1,6 @@
 package com.ullas.majorproject;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,11 +22,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.storage.StorageReference;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,10 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText Name;
     private EditText Password;
     private TextView Info;
-    private Button Login, admin;
+    private Button Login;
     private int counter = 5;
     public static String email;
-    StorageReference storageReference;
     private DatabaseReference mDatabase;
 
     private ProgressDialog progressdailog;
@@ -46,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
         animation.setDuration(1200);
         layout.startAnimation(animation);
 
-
         Name = findViewById(R.id.etName);
         Password = findViewById(R.id.etPassword);
         Info = findViewById(R.id.tvInfo);
@@ -67,11 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         TextView userRegistraion = findViewById(R.id.tvRegister);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
         progressdailog = new ProgressDialog(this);
-
         //FirebaseUser user = firebaseAuth.getCurrentUser();
-
 
 //
 //      if(user !=null)
@@ -81,8 +74,8 @@ public class LoginActivity extends AppCompatActivity {
 //              startActivity( new Intent(LoginActivity.this,SelectActivity.class));
 //        }
 
-
         Login.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 String UserName = ((EditText) findViewById(R.id.etName)).getText().toString();
@@ -107,11 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     //Intent intent=new Intent(Login.this,Login.class);
                 }
-
-
             }
         });
-
         userRegistraion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,12 +111,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
     private void validate(String username, String password) {
         progressdailog.setMessage("Wait a minute until you are verified");
         progressdailog.setCancelable(false);
         progressdailog.show();
         firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
@@ -150,7 +140,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public void showMessage(String title, String Message) {
@@ -168,9 +157,7 @@ public class LoginActivity extends AppCompatActivity {
             return true;
     }
 
-
     public static String num() {
         return email;
     }
-
 }
