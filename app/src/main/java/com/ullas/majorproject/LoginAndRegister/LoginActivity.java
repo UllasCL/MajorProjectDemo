@@ -1,14 +1,16 @@
-package com.ullas.majorproject;
+package com.ullas.majorproject.LoginAndRegister;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -20,16 +22,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.ullas.majorproject.DrawableActivity.ClientDetails;
+import com.ullas.majorproject.R;
+import com.ullas.majorproject.IntegrationOfModules.SelectActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
+    static String firebasetoken;
     private EditText Name;
     private EditText Password;
     private TextView Info;
-    private Button Login, admin;
+    private Button Login;
     private int counter = 5;
     public static String email;
+    private DatabaseReference mDatabase;
 
     private ProgressDialog progressdailog;
     private FirebaseAuth firebaseAuth;
@@ -39,41 +48,37 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.animation);
+        ConstraintLayout layout = findViewById(R.id.animation);
         AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
         animation.setFillAfter(true);
         animation.setDuration(1200);
         layout.startAnimation(animation);
 
-
-        Name = (EditText) findViewById(R.id.etName);
-        Password = (EditText) findViewById(R.id.etPassword);
-        Info = (TextView) findViewById(R.id.tvInfo);
-        Login = (Button) findViewById(R.id.btnLogin);
-        TextView userRegistraion = (TextView) findViewById(R.id.tvRegister);
+        Name = findViewById(R.id.etName);
+        Password = findViewById(R.id.etPassword);
+        Info = findViewById(R.id.tvInfo);
+        Login = findViewById(R.id.btnLogin);
+        TextView userRegistraion = findViewById(R.id.tvRegister);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
         progressdailog = new ProgressDialog(this);
+        //FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-
-
-
-    /*  if(user !=null)
-        {
-            finish();
-            email=firebaseAuth.getCurrentUser().getEmail();
-              startActivity( new Intent(Login.this,Remainder.class));
-        }*/
-
+//
+//      if(user !=null)
+//        {
+//            finish();
+//            email=firebaseAuth.getCurrentUser().getEmail();
+//              startActivity( new Intent(LoginActivity.this,SelectActivity.class));
+//        }
 
         Login.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 String UserName = ((EditText) findViewById(R.id.etName)).getText().toString();
@@ -96,15 +101,10 @@ public class LoginActivity extends AppCompatActivity {
                         Login.setVisibility(View.INVISIBLE);
                         Login.setEnabled(false);
                     }
-
-
                     //Intent intent=new Intent(Login.this,Login.class);
                 }
-
-
             }
         });
-
         userRegistraion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,18 +114,21 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
     private void validate(String username, String password) {
         progressdailog.setMessage("Wait a minute until you are verified");
         progressdailog.setCancelable(false);
         progressdailog.show();
         firebaseAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     progressdailog.dismiss();
+                    firebasetoken = FirebaseInstanceId.getInstance().getToken();
+                    Log.d("FCMToken", "token " + firebasetoken);
+                    mDatabase.child("FCMtokens").child(LoginActivity.num()).child("token").setValue(LoginActivity.firebasetoken);
                     Toast.makeText((LoginActivity.this), "Login successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginActivity.this, SelectActivity.class));
+                    startActivity(new Intent(LoginActivity.this, ClientDetails.class));
                     Name.setText(null);
                     Password.setText(null);
                 } else {
@@ -140,7 +143,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public void showMessage(String title, String Message) {
@@ -158,9 +160,7 @@ public class LoginActivity extends AppCompatActivity {
             return true;
     }
 
-
     public static String num() {
         return email;
     }
-
 }

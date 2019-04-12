@@ -6,9 +6,8 @@
     android:layout_height="match_parent"
     android:id="@+id/animation"
     android:background="#ffff"
-    tools:context=".LoginActivity">
-
-
+    tools:context=".LoginAndRegister.LoginActivity">
+	
     <EditText
         android:id="@+id/etName"
         android:layout_width="249dp"
@@ -19,7 +18,7 @@
         android:layout_marginTop="8dp"
         android:hint=" Phone_number"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="textNoSuggestions|number|textFilter"
         android:drawableLeft="@drawable/ic_android_us"
         android:textColorHint="#fadbd8"
         android:background="@drawable/shape"
@@ -116,6 +115,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@mipmap/icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
