@@ -33,7 +33,6 @@
         android:layout_marginStart="233dp"
         android:layout_marginTop="32dp"
         android:textColor="@color/title"
-        android:gravity="center"
         android:textSize="16dp"
         android:textStyle="bold" />
     

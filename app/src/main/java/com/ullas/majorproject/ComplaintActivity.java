@@ -127,9 +127,9 @@ public class ComplaintActivity extends AppCompatActivity {
         address.setOnClickListener(new View.OnClickListener() {
             @Override//get address.
             public void onClick(View view) {
-                Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
                 try {
-                      progressdailog.show();
+                    progressdailog.show();
                     textAddress.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -137,7 +137,6 @@ public class ComplaintActivity extends AppCompatActivity {
                             progressdailog.dismiss();
                         }
                     }, 5000);
-                    textAddress.setText(getLocation());
                 } catch (Exception e) {
                     Toast.makeText(ComplaintActivity.this, "Not possible to get location", Toast.LENGTH_SHORT).show();
                 }
@@ -158,7 +157,7 @@ public class ComplaintActivity extends AppCompatActivity {
     }
 
     public void uploadAddress() {
-        Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
+        // Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
         String p = ((TextView) findViewById(R.id.textAddress)).getText().toString();
         //Toast.makeText(ComplaintActivity.this, ComplaintID, Toast.LENGTH_LONG).show();
         //Toast.makeText(ComplaintActivity.this, p, Toast.LENGTH_LONG).show();
@@ -173,14 +172,15 @@ public class ComplaintActivity extends AppCompatActivity {
         mDatabase.child("Database").child(LoginActivity.num()).child(ComplaintID).setValue(a);
 
     }
- /*   private String getPictureName()
-    {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String timestamp = sdf.format(new Date());
-        return "com.android." + timestamp + ".jpg";
 
-    }
-  */
+    /*   private String getPictureName()
+       {
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+           String timestamp = sdf.format(new Date());
+           return "com.android." + timestamp + ".jpg";
+
+       }
+     */
     private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");

@@ -19,7 +19,11 @@ android {
     }
 }
 
-
+repositories {
+    maven {
+        url "https://repo.eclipse.org/content/repositories/paho-releases/"
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -56,6 +60,13 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'org.glassfish:javax.annotation:10.0-b28'
     implementation 'com.android.support:support-core-utils:27.1.1'
+
+
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
+        exclude module: 'support-v4'
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

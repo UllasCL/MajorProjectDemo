@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.ullas.majorproject.MapActivity.MapsActivity;
 
 import java.util.List;
 
@@ -67,6 +68,10 @@ public class Menuadapter extends RecyclerView.Adapter<Menuadapter.MyViewHolder> 
                 }
                 if (option.equals("Demo")) {
                     Intent i = new Intent(v.getContext(), ClientDetails.class);
+                    v.getContext().startActivity(i);
+                }
+                if (option.equals("Track vehicle")) {
+                    Intent i = new Intent(v.getContext(), MapsActivity.class);
                     v.getContext().startActivity(i);
                 }
             }

@@ -52,7 +52,7 @@ public class SelectActivity extends AppCompatActivity {
                 R.drawable.leaderboard,
                 R.drawable.domesticgarbage,
                 R.drawable.trackvehicles,
-                R.drawable.createcomplaint
+                R.drawable.demo
         };
         albumList.clear();
 

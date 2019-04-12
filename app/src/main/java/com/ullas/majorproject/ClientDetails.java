@@ -129,10 +129,9 @@ public class ClientDetails extends AppCompatActivity
     }
 
     private void init() {
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = findViewById(R.id.pager);
         mPager.setAdapter(new SlidingImage_Adapter(ClientDetails.this, imageModelArrayList));
-        CirclePageIndicator indicator = (CirclePageIndicator)
-                findViewById(R.id.indicator);
+        CirclePageIndicator indicator = findViewById(R.id.indicator);
         indicator.setViewPager(mPager);
         final float density = getResources().getDisplayMetrics().density;
 //Set circle indicator radius
