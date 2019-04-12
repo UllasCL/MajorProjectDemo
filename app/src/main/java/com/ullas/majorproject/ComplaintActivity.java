@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -36,6 +35,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.ullas.majorproject.DatabaseClasses.Complaint;
+import com.ullas.majorproject.LoginAndRegister.LoginActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -60,6 +61,7 @@ public class ComplaintActivity extends AppCompatActivity {
     public String ComplaintID;
     public double latitude, longitude;
     public String Address, setAddress;
+
     Geocoder geocoder;
     List<android.location.Address> addresses;
     private ProgressDialog progressdailog;
@@ -85,12 +87,10 @@ public class ComplaintActivity extends AppCompatActivity {
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
                             Address = location.toString();
-                            //Toast.makeText(ComplaintActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -127,7 +127,6 @@ public class ComplaintActivity extends AppCompatActivity {
         address.setOnClickListener(new View.OnClickListener() {
             @Override//get address.
             public void onClick(View view) {
-                //Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
                 try {
                     progressdailog.show();
                     textAddress.postDelayed(new Runnable() {
@@ -146,41 +145,42 @@ public class ComplaintActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadAddress();
-                if (flag == 1)
-                    uploadImage();
-                else
-                    uploadImage1(bitmap);
-                Toast.makeText(ComplaintActivity.this, "Address Uploaded", Toast.LENGTH_SHORT).show();
+                  uploadAddress();
             }
         });
     }
 
     public void uploadAddress() {
-        // Toast.makeText(ComplaintActivity.this, LoginActivity.num(), Toast.LENGTH_LONG).show();
         String p = ((TextView) findViewById(R.id.textAddress)).getText().toString();
-        //Toast.makeText(ComplaintActivity.this, ComplaintID, Toast.LENGTH_LONG).show();
-        //Toast.makeText(ComplaintActivity.this, p, Toast.LENGTH_LONG).show();
 
-        long time = System.currentTimeMillis();
-        String time1 = Long.toString(time);
+        if(p.isEmpty()){
 
-        Date d = new Date();
-        String datestring = d.toString();
-        String shortdate = datestring.replace("GMT+05:30", "");
-        Complaint a = new Complaint(LoginActivity.num(), ComplaintID, p, "0", " ", "1", time1, "0", shortdate);
-        mDatabase.child("Database").child(LoginActivity.num()).child(ComplaintID).setValue(a);
+            Toast.makeText(ComplaintActivity.this, "Please retrieve address", Toast.LENGTH_SHORT).show();
 
+        }else {
+            long time = System.currentTimeMillis();
+            String time1 = Long.toString(time);
+
+            Date d = new Date();
+            String dateString = d.toString();
+            String shortDate = dateString.replace("GMT+05:30", "");
+            Complaint a = new Complaint(LoginActivity.num(), ComplaintID, p, "0", " ", "1", time1, "0", shortDate);
+            mDatabase.child("Database").child(LoginActivity.num()).child(ComplaintID).setValue(a);
+
+            if (flag == 1){
+                uploadImage();
+                Toast.makeText(ComplaintActivity.this, "Address Uploaded", Toast.LENGTH_SHORT).show();
+            }
+            else if(flag == 2){
+                uploadImage1(bitmap);
+                Toast.makeText(ComplaintActivity.this, "Address Uploaded", Toast.LENGTH_SHORT).show();
+            }
+                else{
+                Toast.makeText(ComplaintActivity.this, "Please select or click image", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
-    /*   private String getPictureName()
-       {
-           SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-           String timestamp = sdf.format(new Date());
-           return "com.android." + timestamp + ".jpg";
-
-       }
-     */
     private void chooseImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -204,22 +204,17 @@ public class ComplaintActivity extends AppCompatActivity {
             }
             Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
         } else {
-            // Toast.makeText(this, filePath + " ", Toast.LENGTH_LONG).show();
-
             bitmap = (Bitmap) data.getExtras().get("data");
             img.setImageBitmap(bitmap);
             flag = 2;
         }
-        // bitmap = (Bitmap) data.getExtras().get("data");
-        // img.setImageBitmap(bitmap);
     }
 
     public String getLocation() {
         try {
-            Toast.makeText(ComplaintActivity.this, "In get location", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ComplaintActivity.this, "In get location", Toast.LENGTH_SHORT).show();
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             setAddress = "ADDRESS\n" + addresses.get(0).getAddressLine(0);
-            //TimeUnit.SECONDS.sleep(10);
             return setAddress;
         } catch (Exception e) {
             Toast.makeText(ComplaintActivity.this, "Caught error", Toast.LENGTH_SHORT).show();
@@ -230,7 +225,6 @@ public class ComplaintActivity extends AppCompatActivity {
 
 
     private void uploadImage() {
-
         if (filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");

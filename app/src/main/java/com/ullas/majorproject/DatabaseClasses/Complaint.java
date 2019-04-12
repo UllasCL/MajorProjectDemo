@@ -1,7 +1,7 @@
-package com.ullas.majorproject;
+package com.ullas.majorproject.DatabaseClasses;
 
 public class Complaint {
-    String userID, complaintID, complaintAddress,resolved,agentno,publicORprivate,time,clearedtime,date;
+    public String userID, complaintID, complaintAddress, resolved, agentno, publicORprivate, time, clearedtime, date;
 
     public Complaint() {
     }

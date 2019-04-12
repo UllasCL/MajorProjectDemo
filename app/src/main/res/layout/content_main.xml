@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/viewBg"
-    tools:context="com.ullas.majorproject.SelectActivity"
+    tools:context="com.ullas.majorproject.IntegrationOfModules.SelectActivity"
     tools:showIn="@layout/activity_main">
 
     <android.support.v7.widget.RecyclerView

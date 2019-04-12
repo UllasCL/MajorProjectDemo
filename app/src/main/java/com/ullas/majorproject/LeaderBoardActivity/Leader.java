@@ -1,4 +1,4 @@
-package com.ullas.majorproject;
+package com.ullas.majorproject.LeaderBoardActivity;
 
 public class Leader {
     private String uid;

@@ -1,4 +1,4 @@
-package com.ullas.majorproject;
+package com.ullas.majorproject.LoginAndRegister;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -25,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.ullas.majorproject.DrawableActivity.ClientDetails;
+import com.ullas.majorproject.R;
+import com.ullas.majorproject.IntegrationOfModules.SelectActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -125,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("FCMToken", "token " + firebasetoken);
                     mDatabase.child("FCMtokens").child(LoginActivity.num()).child("token").setValue(LoginActivity.firebasetoken);
                     Toast.makeText((LoginActivity.this), "Login successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(LoginActivity.this, SelectActivity.class));
+                    startActivity(new Intent(LoginActivity.this, ClientDetails.class));
                     Name.setText(null);
                     Password.setText(null);
                 } else {

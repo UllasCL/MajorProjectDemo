@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import com.ullas.majorproject.LoginAndRegister.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
     Button goa;

@@ -1,4 +1,4 @@
-package com.ullas.majorproject;
+package com.ullas.majorproject.IntegrationOfModules;
 
 public class Menurow {
     private String name;

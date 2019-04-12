@@ -1,4 +1,4 @@
-package com.ullas.majorproject;
+package com.ullas.majorproject.IntegrationOfModules;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.ullas.majorproject.ComplaintActivity;
+import com.ullas.majorproject.LeaderBoardActivity.Leaderboard;
 import com.ullas.majorproject.MapActivity.MapsActivity;
+import com.ullas.majorproject.Mycomplaints;
+import com.ullas.majorproject.R;
 
 import java.util.List;
 
@@ -64,10 +68,6 @@ public class Menuadapter extends RecyclerView.Adapter<Menuadapter.MyViewHolder> 
                 }
                 if (option.equals("Users leaderborad")) {
                     Intent i = new Intent(v.getContext(), Leaderboard.class);
-                    v.getContext().startActivity(i);
-                }
-                if (option.equals("Demo")) {
-                    Intent i = new Intent(v.getContext(), ClientDetails.class);
                     v.getContext().startActivity(i);
                 }
                 if (option.equals("Track vehicle")) {

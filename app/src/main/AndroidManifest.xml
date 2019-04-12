@@ -21,7 +21,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Leaderboard"/>
+        <activity android:name=".LeaderBoardActivity.Leaderboard"/>
         <activity android:name=".GetPrivateNotification">
             <intent-filter>
                 <action android:name="dustbin_full"/>
@@ -45,12 +45,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".RegistrationActivity"/>
-        <activity android:name=".CameraActivity"/>
-        <activity android:name=".SelectActivity"/>
+        <activity android:name=".LoginAndRegister.LoginActivity"/>
+        <activity android:name=".LoginAndRegister.RegistrationActivity"/>
+        <activity android:name=".IntegrationOfModules.SelectActivity"/>
         <activity android:name=".ComplaintActivity"/>
-        <activity android:name=".ClientDetails"/>
+        <activity android:name=".DrawableActivity.ClientDetails"/>
         
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
@@ -61,7 +60,7 @@
         <service android:name="org.eclipse.paho.android.service.MqttService"/>
         
         <activity
-                android:name=".SettingsActivity"
+                android:name=".SettingsActivity.SettingsActivity"
                 android:label="@string/title_activity_settings">
         </activity>
     </application>

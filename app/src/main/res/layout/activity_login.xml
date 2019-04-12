@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/animation"
     android:background="#ffff"
-    tools:context=".LoginActivity">
+    tools:context=".LoginAndRegister.LoginActivity">
 	
     <EditText
         android:id="@+id/etName"

@@ -1,4 +1,4 @@
-package com.ullas.majorproject;
+package com.ullas.majorproject.IntegrationOfModules;
 
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
+import com.ullas.majorproject.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +39,6 @@ public class SelectActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         prepareAlbums();
 
-      /*  try {
-            Glide.with(this).load(R.drawable.appgradle).into((ImageView) findViewById(R.id.backdrop));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
     private void prepareAlbums() {
@@ -52,7 +48,6 @@ public class SelectActivity extends AppCompatActivity {
                 R.drawable.leaderboard,
                 R.drawable.domesticgarbage,
                 R.drawable.trackvehicles,
-                R.drawable.demo
         };
         albumList.clear();
 
@@ -69,9 +64,6 @@ public class SelectActivity extends AppCompatActivity {
         albumList.add(a);
 
         a = new Menurow("Track vehicle",  covers[4]);
-        albumList.add(a);
-
-        a = new Menurow("Demo", covers[5]);
         albumList.add(a);
 
         adapter.notifyDataSetChanged();
