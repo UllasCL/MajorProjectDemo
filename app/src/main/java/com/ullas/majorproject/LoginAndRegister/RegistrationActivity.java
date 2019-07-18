@@ -74,7 +74,7 @@ public class RegistrationActivity extends AppCompatActivity {
         mcallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                 Toast.makeText(RegistrationActivity.this, "Verification completed", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegistrationActivity.this, "Verification completed", Toast.LENGTH_LONG).show();
             }
             @Override
             public void onVerificationFailed(FirebaseException e) {
